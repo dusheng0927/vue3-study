@@ -45,6 +45,7 @@ export default {
       this.to = to
       this.canLoadMore = true
       this.resetPreviewList(from, to)
+      this.handleScroll()
     },
     resetPreviewList (from, to) {
       this.previewList = []
