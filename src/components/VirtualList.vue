@@ -4,7 +4,7 @@
     <span> 44条数据 from {{ from }} to {{ to }} </span>
     <span>当前已经滚动到 {{ displayCount }}</span>
   </div>
-  <div class="virtual-list" ref="virtualList" @scroll="handleScroll">
+  <div class="virtual-list" id="virtualList" ref="virtualList" @scroll="handleScroll">
     <ul id="ulBox" :style="{paddingTop: lineTopHeight + 'px', paddingBottom: lineBottomHeight + 'px'}">
       <li v-for="item in previewList" :key="item.title">
         {{ item.title }}
@@ -55,6 +55,7 @@ export default {
     handleScroll () {
       const scrollTop = this.$refs.virtualList.scrollTop
       const clientHeight = this.$refs.virtualList.offsetHeight
+      const scrollHeight = this.$refs.virtualList.scrollHeight
       const lis = document.getElementsByTagName('li')
       if (scrollTop / lis[0].offsetHeight - Math.floor(scrollTop / lis[0].offsetHeight) > 0.5) {
         this.displayCount = Math.ceil(scrollTop / lis[0].offsetHeight)
@@ -62,8 +63,7 @@ export default {
         this.displayCount = Math.floor(scrollTop / lis[0].offsetHeight)
       }
 
-      const ulElm = document.getElementById('ulBox')
-      if (this.to === this.list.length && ulElm.offsetHeight - scrollTop - clientHeight < 10) { // 加载下一个100条数据
+      if (this.to === this.list.length && scrollHeight - scrollTop - clientHeight < 10) { // 加载下一个100条数据
         this.loadData(this.from, this.to)
         return
       }
